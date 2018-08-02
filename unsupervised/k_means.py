@@ -3,16 +3,16 @@
 
 # Logistic Regression
 
-from sklearn.linear_model import LinearRegression
+from sklearn.cluster import KMeans
 from sklearn.metrics import roc_auc_score
 import pandas as pd
 
-class LinearReg:
+class Kmeans:
     def __init__(self):
         self.dataset = "dataset/preprocessed_data.csv"
         self.y = "dataset/objective_data.csv"
 
-    def linear_regression(self):
+    def k_means(self):
         X = pd.read_csv(self.dataset)
         y = pd.read_csv(self.y)
 
@@ -38,7 +38,7 @@ class LinearReg:
         
 
         def find_model_perf(X_train, y_train, X_test, y_test):
-            model = LinearRegression()
+            model = KMeans(n_clusters=2,random_state=1)
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
             auc = roc_auc_score(y_test, y_pred)
@@ -70,10 +70,10 @@ class LinearReg:
         auc_unprocessed = find_model_perf(X_train_unprocessed, y_train, X_test_unprocessed, y_test)
         
         # Compare model performance
-        print('\nLinear Regression:')
+        print('\nKMeans:')
         print('AUC of model with data preprocessing: {auc}'.format(auc=auc_processed))
         print('AUC of model with data without preprocessing: {auc}'.format(auc=auc_unprocessed))
         per_improve = ((auc_processed-auc_unprocessed)/auc_unprocessed)*100
         print('Model improvement of preprocessing: {per_improve}%'.format(per_improve = per_improve))
-        
-        return "Linear Regression: " + str(auc_processed)
+                
+        return "KMeans: " + str(auc_processed)
